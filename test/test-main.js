@@ -46,12 +46,22 @@ describe("uploadToAws", function(){
   });
 })
 
-describe.only("end to end", function(){
+describe("end to end", function(){
   it("should backup the test database and save it to amazon", function(done){
     app.backup(process.env.MONGODB_URI, process.env.AWS_KEY, process.env.AWS_SECRET, process.env.AWS_BUCKET, function(err, result){
       assert.equal(err, undefined);
 
       done();
+    })
+  })
+})
+
+describe('download', function(){
+  this.timeout(10000)
+  it('should download the file from amazon', function(done){
+    app.restore('/backup/2014-11-17T03:03:26.635Z.json', process.env.AWS_KEY, process.env.AWS_SECRET, process.env.AWS_BUCKET, function(res){
+      assert.notEqual(res,undefined);
+      done()
     })
   })
 })
